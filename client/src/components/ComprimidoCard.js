@@ -1,15 +1,66 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Card, Button } from 'semantic-ui-react'
 import moment from 'moment'
-import { Link } from 'react-router-dom'
-
-
+import { Link, useNavigate } from 'react-router-dom'
+import gql from 'graphql-tag'
+import { useMutation } from '@apollo/react-hooks'
 
 export default function ComprimidoCard(props) {
 
-    const handleDelete = (id) => {
+    const navigate = useNavigate()
+    const [values, setValues] = useState({
 
-        console.log('diste click a' + id)
+        id: ''
+
+    })
+
+    const DELETE_COMPRIMIDO_MUTATION = gql`
+
+    mutation deleteComprimido($id: ID!)
+     {
+        deleteComprimido(id: $id)
+            
+        
+            
+        
+    }
+
+    
+`
+    const FETCH_COMPRIMIDOS_QUERY = gql`
+{
+    comprimidos{
+    id nombre cantidad fechaVencido
+}
+}
+
+
+`
+
+    const [deleteComprimido] = useMutation(DELETE_COMPRIMIDO_MUTATION, {
+        update(proxy, result) {
+            if (result) {
+                navigate('/update')
+                const data = proxy.readQuery({
+                    query: FETCH_COMPRIMIDOS_QUERY
+                });
+                data.comprimidos = data.comprimidos.filter(p => p.id !== values.id);
+                proxy.writeQuery({ query: FETCH_COMPRIMIDOS_QUERY, data });
+
+            }
+        },
+        variables: values
+    })
+
+    const handleDelete = async (id) => {
+
+        await setValues({
+            id
+        })
+
+
+
+        await deleteComprimido()
 
     }
 
@@ -31,10 +82,10 @@ export default function ComprimidoCard(props) {
                 </Card.Content>
                 <Card.Content extra>
                     <div className='ui two buttons'>
-                        <Button basic color='green' as={Link} to={`/comprimidos/${id}`}>
+                        <Button basic color='green' as={Link} to={'/createComprimido/' + id}>
                             Editar
                         </Button>
-                        <Button onClick={() => handleDelete(id)} basic color='red'>
+                        <Button onClick={() => { setValues({ id: id }); handleDelete(id) }} basic color='red'>
                             Eliminar
                         </Button>
                     </div>

@@ -4,9 +4,9 @@ import Provider from './ApolloProvider';
 
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider />
-  </React.StrictMode>,
+
+  <Provider />
+  ,
   document.getElementById('root')
 );
 

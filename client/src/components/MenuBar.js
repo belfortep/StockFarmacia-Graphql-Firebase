@@ -38,6 +38,24 @@ export default function MenuBar() {
             >
                 Liquidos
             </Menu.Item>
+            <Menu.Item
+                name='createComprimido'
+                active={activeItem === 'createComprimido'}
+                onClick={handleItemClick}
+                as={Link}
+                to="/createComprimido"
+            >
+                Nuevo Comprimido
+            </Menu.Item>
+            <Menu.Item
+                name='createLiquido'
+                active={activeItem === 'createLiquido'}
+                onClick={handleItemClick}
+                as={Link}
+                to="/createLiquido"
+            >
+                Nuevo Liquido
+            </Menu.Item>
         </Menu>
     )
 

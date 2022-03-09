@@ -110,11 +110,11 @@ const resolvers = {
 
             return token
         },
-        deleteComprimido: async (_, { id }, context) => {
+        deleteComprimido: async (_, args, context) => {
 
             const user = authenticate(context)
 
-            await db.collection('comprimidos').doc(id).delete()
+            await db.collection('comprimidos').doc(args.id).delete()
 
             return 'Comprimido Eliminado';
         },
