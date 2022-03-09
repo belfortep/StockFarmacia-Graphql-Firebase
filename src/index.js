@@ -47,6 +47,7 @@ async function start() {
 
   app.listen(app.get('port'), () => {
     console.log(`Servidor en el puerto ${app.get('port')}`);
+    //console.log(new Date().toISOString())
   })
 
 }
